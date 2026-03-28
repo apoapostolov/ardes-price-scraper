@@ -1,0 +1,4 @@
+canonical_id,subcategory_id,descriptor,product_id,raw_name,normalized_name,slug,price_bgn,deal_price_bgn,price_eur
+1,10,CPU,1001,AMD Ryzen 7 7700,amd ryzen 7 7700,amd-ryzen-7-7700,630.00,552.60,0
+2,19,Memory (RAM),2001,2x32GB DDR5 6000 Kingston,2x32gb ddr5 6000 kingston,2x32gb-ddr5-6000-kingston,1599.00,1200.00,0
+3,50,Graphics Cards,3001,ASRock Radeon RX 7600 8GB,asrock radeon rx 7600 8gb,asrock-radeon-rx-7600-8gb,539.00,,0

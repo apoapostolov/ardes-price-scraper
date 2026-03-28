@@ -1,0 +1,114 @@
+[general]
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+# Set a proxy to bypass IP blocking. Use a residential proxy service like Bright Data or Oxylabs
+# proxy = "http://username:password@proxy-host:port"
+
+[scraper]
+output_dir = "../output"
+database_path = "data/ardes_prices.db"
+min_days_between_price_rows = 7
+subcat_scan_min = 1
+subcat_scan_max = 100
+allowed_subcats = [19, 20, 21, 23, 24, 37, 48, 191]
+
+# Category groupings for organized scraping
+
+[scraper.categories]
+
+# Core PC Components - essential for building PCs
+
+core_pc = [19, 20, 21, 23, 24, 37]  # RAM, CPU, Motherboard, PSU, Cases, GPU
+
+# Storage - drives and enclosures
+
+storage = [17, 18]  # Storage Enclosures, Optical Drives
+
+# Cooling - thermal management
+
+cooling = [47, 48, 94]  # Memory Cards (thermal?), Thermal Paste, Laptop Coolers
+
+# Peripherals - input/output devices
+
+peripherals = [10, 30, 31]  # Monitors, Keyboards, Mice
+
+# Software - operating systems and applications
+
+software = [25, 28, 29]  # OS, Office Apps, Antivirus
+
+# Networking - network equipment and accessories
+
+networking = [13, 14, 97]  # Scanners (network?), Network Adapters, Network Equipment
+
+# Audio/Video - multimedia devices
+
+audio_video = [16, 34, 77, 78]  # Projectors, Webcams, Sound Cards, Speakers
+
+# Mobile/Computing - laptops, tablets, phones
+
+mobile = [9, 35, 58]  # Mini PCs, Laptops, Feature Phones
+
+# Other categories - specialized or miscellaneous
+
+other = [8, 12, 15, 22, 36, 62, 65, 69, 72, 79, 81, 84, 88, 89, 90, 92, 93, 95]
+
+# Servers, Printers, UPS, Streaming/Capture, Laptop Accessories, Smart Speakers
+
+# Large Format Printers, Gaming Controllers, MFUs, Interactive Displays
+
+# Used Laptops, Instant Cameras, Chargers, Laptop Skins, RAM (additional)
+
+# Used Desktops, Smart Home, Drawing Tablets
+
+# Canonical category names - standardized English descriptors for each subcategory
+
+[scraper.category_names]
+8 = "Servers/Workstations"
+9 = "Mini PCs"
+10 = "Monitors"
+12 = "Printers"
+13 = "Scanners"
+14 = "Networking"
+15 = "UPS"
+16 = "Projectors"
+17 = "Storage Enclosures"
+18 = "Optical Drives"
+19 = "Memory (RAM)"
+20 = "Processors"
+21 = "Motherboards"
+22 = "Streaming/Capture"
+23 = "Power Supplies"
+24 = "PC Cases"
+25 = "Software"
+28 = "Software"
+29 = "Security Software"
+30 = "Keyboards"
+31 = "Mice"
+34 = "Webcams"
+35 = "Laptops"
+36 = "Laptop Accessories"
+37 = "Graphics Cards"
+47 = "Memory Cards"
+48 = "Cooling"
+58 = "Feature Phones"
+62 = "Smart Speakers"
+65 = "Large Format Printers"
+69 = "Gaming Controllers"
+72 = "Printers & MFUs"
+77 = "Sound Cards"
+78 = "Speakers"
+79 = "Interactive Displays"
+81 = "Used Laptops"
+84 = "Instant Cameras"
+88 = "Chargers"
+89 = "Laptop Skins"
+90 = "Memory (RAM)"
+92 = "Used Desktops"
+93 = "Smart Home"
+94 = "Cooling"
+95 = "Drawing Tablets"
+97 = "Network Equipment"
+
+[network]
+retry_attempts = 3
+backoff_factor = 0.5
+timeout_seconds = 30.0
