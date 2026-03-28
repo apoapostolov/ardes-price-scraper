@@ -32,6 +32,16 @@ python mcp_wrapper.py scrape
 - `search_products(query, limit=5)`: Search database for products
 - `generate_price_report()`: Create price change analysis
 
+## AI Skill Integration
+
+This repository includes a comprehensive skill file for AI agents (OpenClaw, Claude, etc.) to autonomously use the scraper:
+
+- **Skill File**: [`skills/ARDES_SCRAPER_SKILL.md`](skills/ARDES_SCRAPER_SKILL.md)
+- **Installation**: Copy the skill file to your AI agent's skills directory
+- **Capabilities**: Full scraping, searching, reporting, and MCP integration
+
+The skill provides autonomous installation commands and detailed usage instructions for AI agents to set up and operate the scraper without human intervention.
+
 ## Features
 
 - **Comprehensive Price Scraping**: Fetches all product prices from Ardes.bg configurator feeds
