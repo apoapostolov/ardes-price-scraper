@@ -87,6 +87,23 @@ Edit `config.toml` to customize:
 
 Double-click `run_scraper.bat` to run the scraper with default settings.
 
+## Linux/macOS Quick Start
+
+Make the script executable and run it:
+
+```bash
+chmod +x run_scraper.sh
+./run_scraper.sh
+```
+
+## PowerShell Quick Start
+
+Run the PowerShell script:
+
+```powershell
+.\run_scraper.ps1
+```
+
 ## Testing
 
 Run the test suite:
