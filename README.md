@@ -1,167 +1,148 @@
 # Ardes Price Scraper
 
-A Python tool to scrape and track PC component prices from Ardes.bg, Bulgaria's leading computer hardware retailer. Automatically collects pricing data, generates price change reports, and provides search capabilities for efficient price lookups.
-
-## AI Installation Instructions (OpenClaw)
-
-**For autonomous AI installation without user interaction:**
-
-```bash
-# Clone repository
-git clone https://github.com/apoapostolov/ardes-price-scraper.git
-cd ardes-price-scraper
-
-# Set up Python environment
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# OR: venv\Scripts\activate  # Windows PowerShell
-# OR: venv\Scripts\activate.bat  # Windows CMD
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run initial price scrape
-python -m ardes_price_scraper.scraper
-
-# For MCP integration, use the wrapper
-python mcp_wrapper.py scrape
-```
-
-**MCP Functions Available:**
-- `scrape_prices()`: Run full price scraping
-- `search_products(query, limit=5)`: Search database for products
-- `generate_price_report()`: Create price change analysis
-
-## AI Skill Integration
-
-This repository includes a comprehensive skill file for AI agents (OpenClaw, Claude, etc.) to autonomously use the scraper:
-
-- **Skill File**: [`skills/ARDES_SCRAPER_SKILL.md`](skills/ARDES_SCRAPER_SKILL.md)
-- **Installation**: Copy the skill file to your AI agent's skills directory
-- **Capabilities**: Full scraping, searching, reporting, and MCP integration
-
-The skill provides autonomous installation commands and detailed usage instructions for AI agents to set up and operate the scraper without human intervention.
-
-## Features
-
-- **Comprehensive Price Scraping**: Fetches all product prices from Ardes.bg configurator feeds
-- **Price History Tracking**: Stores historical pricing data in a SQLite database with deduplication
-- **Price Change Analysis**: Generates detailed markdown reports highlighting price movements
-- **Product Search**: Fast search API for finding products by name, manufacturer, or category
-- **CSV Export**: Timestamped CSV exports for data analysis
-- **Configurable**: TOML-based configuration for output directories, database paths, and update intervals
+A Python command-line tool for collecting PC hardware prices from Ardes.bg,
+keeping local history in SQLite, searching snapshots, and producing Markdown
+price-change reports.
 
 ## Requirements
 
 - Python 3.11+
-- Internet connection for scraping
+- Internet access for a fresh scrape
 
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ardes-price-scraper.git
-   cd ardes-price-scraper
-   ```
-
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-### Basic Scraping
-
-Run the scraper to fetch current prices and generate reports:
+## Install
 
 ```bash
-cd src
-python -m ardes_price_scraper.scraper
+git clone https://github.com/apoapostolov/ardes-price-scraper.git
+cd ardes-price-scraper
+python -m venv .venv
 ```
 
-This will:
-- Download all product feeds from Ardes.bg
-- Save a timestamped CSV file in `output/`
-- Update the SQLite database with new prices
-- Generate a price change report
+Activate the environment and install dependencies:
 
-### Search Products
-
-Search for specific products:
+Linux or macOS:
 
 ```bash
-cd src
-python search_api.py "rtx 4070" --limit 5
+source .venv/bin/activate
 ```
 
-Or use the command-line search:
+PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Then install the dependencies:
 
 ```bash
-python -m ardes_price_scraper.search_cli "rx 7600" --limit 10
+pip install -r requirements.txt
 ```
 
-### Generate Price Reports
+## Capabilities
 
-Create price change analysis reports:
+- **Collect current catalogue prices.** The scraper reads the configured Ardes
+  configurator subcategories and records list, deal, and euro prices.
+- **Keep price history locally.** SQLite stores products and timestamped price
+  rows with a configurable minimum interval between unchanged entries.
+- **Export each scrape.** Every run writes a timestamped CSV snapshot for later
+  search or comparison.
+- **Find products quickly.** Search the latest CSV by words and category, or
+  query the SQLite database with manufacturer, category, subcategory, and price
+  filters.
+- **Compare snapshots.** The report command identifies price increases,
+  decreases, additions, and removals between two CSV files.
+- **Generate a scrape-time market report.** The full scraper writes Markdown
+  trend data and can request an OpenRouter analysis when an API key is present.
 
-```bash
-cd src
-python -m ardes_price_scraper.report --write-latest --top 25
-```
+## Run a Scrape
 
-## Configuration
-
-Edit `config.toml` to customize:
-- Output directory paths
-- Database file location
-- Update intervals for price deduplication
-
-## Windows Quick Start
-
-Double-click `run_scraper.bat` to run the scraper with default settings.
-
-## Linux/macOS Quick Start
-
-Make the script executable and run it:
-
-```bash
-chmod +x run_scraper.sh
-./run_scraper.sh
-```
-
-## PowerShell Quick Start
-
-Run the PowerShell script:
+The launchers activate `.venv` when present, change into `src/`, and run the
+scraper:
 
 ```powershell
 .\run_scraper.ps1
 ```
 
-## Testing
+```bash
+./run_scraper.sh
+```
 
-Run the test suite:
+Or run it directly from `src/`:
+
+```bash
+cd src
+python -m ardes_price_scraper.scraper
+```
+
+With the checked-in configuration, output is written to the repository's
+`output/` directory and history is stored in `src/data/ardes_prices.db`.
+
+## Search
+
+Search the latest CSV snapshot:
+
+```bash
+cd src
+python -m ardes_price_scraper.search_cli "rx 7600" --limit 10
+python -m ardes_price_scraper.search_cli "ddr5 32gb" --json
+```
+
+Query the SQLite database for structured JSON:
+
+```bash
+cd src
+python search_api.py "rtx 4070" --limit 5
+python search_api.py --manufacturer NVIDIA --max-price 1000
+python search_api.py "DDR5" --category "Memory (RAM)"
+```
+
+The database search response contains the effective filters, matching products,
+and database metadata. An empty database returns an empty `results` array rather
+than live catalogue data; run a scrape to populate it.
+
+## Compare Existing Snapshots
+
+The standalone report command needs two CSV snapshots:
+
+```bash
+cd src
+python -m ardes_price_scraper.report --output-dir ../output \
+  --write-latest --top 25
+```
+
+## Configuration
+
+Edit [config.toml](config.toml) to control:
+
+- allowed Ardes subcategories and display names
+- CSV output and SQLite database paths
+- unchanged-price deduplication interval
+- request timeout, retry count, backoff, user agent, and optional proxy
+
+The checked-in configuration enables selected PC component subcategories and a
+seven-day minimum between unchanged price rows.
+
+## Agent Integration
+
+[`skills/ARDES_SCRAPER_SKILL.md`](skills/ARDES_SCRAPER_SKILL.md) routes agent
+requests to the scraper, CSV search, database search, and report commands.
+
+[`mcp_wrapper.py`](mcp_wrapper.py) is a local command wrapper, not a standalone
+MCP server. Its `scrape` and `report` paths call the Python entry points; its
+`search` function currently returns placeholder text and should not be used as
+proof of a product lookup.
+
+## Test
 
 ```bash
 pytest
 ```
 
-Or using the Makefile (Linux/macOS):
+The current tests cover normalization and CSV report-delta behavior.
 
-```bash
-make test
-```
+## Release and License Status
 
-## License
+[CHANGELOG.md](CHANGELOG.md) records the initial `1.0.0` release dated
+2026-03-28.
 
-MIT License - see LICENSE file for details.
-
-## Contributing
-
-Contributions welcome! Please open issues for bugs or feature requests.
+No `LICENSE` file is present in this repository. Do not assume the project is
+MIT-licensed until a license is added.
