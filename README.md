@@ -126,8 +126,8 @@ seven-day minimum between unchanged price rows.
 [`skills/ARDES_SCRAPER_SKILL.md`](skills/ARDES_SCRAPER_SKILL.md) routes agent
 requests to the scraper, CSV search, database search, and report commands.
 
-[`mcp_wrapper.py`](mcp_wrapper.py) is a local command wrapper, not a standalone
-MCP server. Its `scrape` and `report` paths call the Python entry points; its
+[`mcp_wrapper.py`](mcp_wrapper.py) is a local command wrapper. It does not run
+as a standalone MCP server. Its `scrape` and `report` paths call the Python entry points; its
 `search` function currently returns placeholder text and should not be used as
 proof of a product lookup.
 
